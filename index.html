@@ -29,22 +29,6 @@
         }
         h1 { color: #fff; text-shadow: 0 0 15px #00ffcc; margin-top: 0; font-size: 2.2rem; }
         p { color: #8a99ad; margin-bottom: 25px; font-size: 1.1rem; }
-        
-        .apiKeyBox {
-            margin-bottom: 15px;
-            text-align: right;
-        }
-        .apiKeyBox label { color: #8a99ad; font-size: 0.85rem; display: block; margin-bottom: 5px; }
-        .apiKeyInput {
-            width: 100%;
-            background: #080a0f;
-            border: 1px solid #242b38;
-            border-radius: 8px;
-            color: #00ffcc;
-            padding: 8px 12px;
-            font-size: 14px;
-        }
-
         textarea {
             width: 100%;
             height: 140px;
@@ -59,7 +43,6 @@
             transition: border-color 0.3s;
         }
         textarea:focus { border-color: #00ffcc; box-shadow: 0 0 10px rgba(0, 255, 204, 0.2); }
-        
         button {
             background: linear-gradient(135deg, #00ffcc, #00b894);
             color: #080a0f;
@@ -75,7 +58,6 @@
             width: 100%;
         }
         button:hover { background: #fff; box-shadow: 0 0 30px #fff; transform: translateY(-2px); }
-        
         #output {
             margin-top: 25px;
             padding: 20px;
@@ -95,12 +77,7 @@
 <body>
     <div class="container">
         <h1>AI Cyber-Roaster ⚡</h1>
-        <p>הכנס טקסט, קוד או רעיון – וקבל ניתוח שנון ומצחיק מ-Gemini!</p>
-        
-        <div class="apiKeyBox">
-            <label>API Key (אופציונלי - אם בא לך תשובות בלייב מ-Gemini):</label>
-            <input type="password" id="userApiKey" class="apiKeyInput" placeholder="הדבק כאן את ה-Gemini Key שלך (נשמר רק בדפדפן שלך)...">
-        </div>
+        <p>הכנס טקסט, קוד או רעיון – וקבל ניתוח שנון ומצחיק מ-Gemini AI בלייב!</p>
 
         <textarea id="userInput" placeholder="זרוק פה קוד, רעיון, או טקסט שבא לך לבדוק..."></textarea>
         <button onclick="analyze()">שרוף את זה! 🔥</button>
@@ -111,52 +88,31 @@
     <script>
         async function analyze() {
             const input = document.getElementById('userInput').value;
-            const apiKey = document.getElementById('userApiKey').value;
             const output = document.getElementById('output');
-            
+
             if (!input.trim()) {
                 output.innerText = "בחייך, תכתוב משהו קודם לפני שאתה לוחץ...";
                 return;
             }
 
-            output.innerText = "מנתח נתונים במעבדה... 🧠⚡";
+            output.innerText = "מנתח נתונים בשרת הענן... 🧠⚡";
 
-            // אם המשתמש הזין API Key, נריץ קריאה אמיתית ל-Gemini API!
-            if (apiKey.trim()) {
-                try {
-                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            contents: [{
-                                parts: [{
-                                    text: `אתה סטנדאפיסט ומבקר קוד/טקסט שנון ומצחיק. תן תגובה קצרה, קורעת ושנונה בעברית לטקסט הבא: ${input}`
-                                }]
-                            }]
-                        })
-                    });
+            try {
+                // פנייה לשרת ה-Proxy המאובטח שלך ב-Cloudflare!
+                const response = await fetch('https://my-ai-proxy.yaari-ai.workers.dev', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: input })
+                });
 
-                    const data = await response.json();
-                    if (data.candidates && data.candidates[0].content.parts[0].text) {
-                        output.innerText = data.candidates[0].content.parts[0].text;
-                    } else {
-                        output.innerText = "שגיאה בתשובה מ-Gemini. ודא שה-API Key תקין!";
-                    }
-                } catch (e) {
-                    output.innerText = "שגיאה בהתחברות ל-API! בדוק את החיבור לרשת.";
+                const data = await response.json();
+                if (data.reply) {
+                    output.innerText = data.reply;
+                } else {
+                    output.innerText = "משהו התבשבש בשרת. נסה שוב בעוד רגע!";
                 }
-            } else {
-                // הדמיה שנונה למקרה שאין API Key
-                setTimeout(() => {
-                    const roasts = [
-                        "אוקיי, סרקתי את מה שכתבת... הדבר היחיד שחסר פה זה קצת הגיון! 😅",
-                        "הקוד/טקסט הזה נראה כאילו נכתב ב-3 לפנות בוקר על שילוב של קפאין ומשאלת לב.",
-                        "חזק מאוד! אם המטרה הייתה לבלבל את המחשב – הצלחת ב-100%.",
-                        "פקחתי עיניים, קראתי את זה, ואני מבקש לחזור ל-Sleep Mode בבקשה."
-                    ];
-                    const randomRoast = roasts[Math.floor(Math.random() * roasts.length)];
-                    output.innerText = randomRoast + "\n\n(💡 טיפ: הדבק את ה-API Key שלך למעלה כדי לקבל תשובות ייחודיות מ-Gemini בלייב!)";
-                }, 1000);
+            } catch (e) {
+                output.innerText = "שגיאה בתקשורת עם השרת!";
             }
         }
     </script>
