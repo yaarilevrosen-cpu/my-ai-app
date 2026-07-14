@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Cyber Lab ⚡</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #0a0c10;
+            color: #00ffcc;
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #12161f;
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.2);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 650px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 { color: #fff; text-shadow: 0 0 12px #00ffcc; margin-top: 0; }
+        p { color: #8b949e; margin-bottom: 25px; }
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #0a0c10;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            color: #fff;
+            padding: 12px;
+            font-size: 16px;
+            resize: none;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        textarea:focus { border-color: #00ffcc; }
+        button {
+            background: #00ffcc;
+            color: #0a0c10;
+            font-weight: bold;
+            font-size: 18px;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+            transition: all 0.2s;
+        }
+        button:hover { background: #fff; box-shadow: 0 0 25px #fff; transform: translateY(-2px); }
+        #output {
+            margin-top: 25px;
+            padding: 18px;
+            background: #0a0c10;
+            border-radius: 8px;
+            color: #e6edf3;
+            text-align: right;
+            white-space: pre-wrap;
+            min-height: 60px;
+            border-right: 4px solid #00ffcc;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AI Cyber-Studio 🚀</h1>
+        <p>הכנס טקסט, קוד או רעיון – וקבל ניתוח שנון בזמן אמת ממודל AI למעבדה שלך</p>
+        
+        <textarea id="userInput" placeholder="זרוק פה משהו מגניב לבדוק..."></textarea>
+        <button onclick="analyze()">תריץ ניתוח ⚡</button>
+
+        <div id="output">התוצאות יופיעו כאן...</div>
+    </div>
+
+    <script>
+        async function analyze() {
+            const input = document.getElementById('userInput').value;
+            const output = document.getElementById('output');
+            
+            if (!input.trim()) {
+                output.innerText = "בחייך, לפחות תכתוב משהו לפני שאתה לוחץ...";
+                return;
+            }
+
+            output.innerText = "מריץ עיבוד נתונים במעבדה... 🧠⚡";
+
+            setTimeout(() => {
+                output.innerText = "🔥 האתר באוויר מכל העולם! בשלב הבא נחבר לו את מפתח ה-API בצורה מאובטחת.";
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
